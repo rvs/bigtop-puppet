@@ -1,0 +1,6 @@
+[bigtop]
+name=Bigtop
+enabled=1
+gpgcheck=0
+type=NONE
+baseurl=<%= @repo_url %>
