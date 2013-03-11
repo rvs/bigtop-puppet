@@ -31,17 +31,25 @@ class bigtop::zookeeper(
     #kerberos::host_keytab { "zookeeper":
     #  spnego => true,
     #}
+  }
 
-    file { "/etc/zookeeper/conf/java.env":
-      source  => "puppet:///modules/bigtop/zookeeper/java.env",
-      require => Package["zookeeper-server"],
-      notify  => Service["zookeeper-server"],
+  file { "/etc/zookeeper/conf/java.env":
+    source  => "puppet:///modules/bigtop/zookeeper/java.env",
+    require => Package["zookeeper-server"],
+    notify  => Service["zookeeper-server"],
+    ensure  => $kerberos_realm ? {
+      ""      => absent,
+      default => present,
     }
+  }
 
-    file { "/etc/zookeeper/conf/jaas.conf":
-      content => template("bigtop/zookeeper/jaas.conf.erb"),
-      require => Package["zookeeper-server"],
-      notify  => Service["zookeeper-server"],
+  file { "/etc/zookeeper/conf/jaas.conf":
+    content => template("bigtop/zookeeper/jaas.conf.erb"),
+    require => Package["zookeeper-server"],
+    notify  => Service["zookeeper-server"],
+    ensure  => $kerberos_realm ? {
+      ""      => absent,
+      default => present,
     }
   }
 }
