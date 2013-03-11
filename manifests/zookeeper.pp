@@ -23,11 +23,11 @@ class bigtop::zookeeper(
   } 
 
   file { "/etc/zookeeper/conf/zoo.cfg":
-    content => template("bigtop/zookeeper/zoo.cfg"),
+    content => template("bigtop/zookeeper/zoo.cfg.erb"),
     require => Package["zookeeper"],
   }
 
-  if ($kerberos_realm) {
+  if ($kerberos_realm != '') {
     #kerberos::host_keytab { "zookeeper":
     #  spnego => true,
     #}
@@ -39,7 +39,7 @@ class bigtop::zookeeper(
     }
 
     file { "/etc/zookeeper/conf/jaas.conf":
-      content => template("bigtop/zookeeper/jaas.conf"),
+      content => template("bigtop/zookeeper/jaas.conf.erb"),
       require => Package["zookeeper-server"],
       notify  => Service["zookeeper-server"],
     }

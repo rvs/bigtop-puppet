@@ -5,7 +5,7 @@ class bigtop::repo(
   case $::operatingsystem {
     /(OracleLinux|CentOS|Fedora|RedHat)/: {
       file { "/etc/yum.repos.d/bigtop.repo":
-        content => template("bigtop/bigtop.repo"),
+        content => template("bigtop/bigtop.repo.erb"),
       }
     }
 
